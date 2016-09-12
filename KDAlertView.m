@@ -165,7 +165,7 @@ static NSMutableArray *__ActiveInstances = nil;
     [_buttonActionBlockArray addObject:action ? [action copy] : [NSNull null]];
 }
 
-- (void)show {
+- (void)showInWindow:(NSWindow *)window {
     [__ActiveInstances addObject:self];
     
     NSAlert *alert = [[NSAlert alloc] init];
@@ -181,8 +181,6 @@ static NSMutableArray *__ActiveInstances = nil;
     }
     
     alert.alertStyle = self.alertStyle;
-    
-    NSWindow *window = [NSApplication sharedApplication].keyWindow ?: [NSApplication sharedApplication].mainWindow;
     
     if (window) {
         [alert beginSheetModalForWindow:window completionHandler:^(NSModalResponse response) {
@@ -209,19 +207,18 @@ static NSMutableArray *__ActiveInstances = nil;
         }
         
         [__ActiveInstances removeObject:self];
-
     }
 }
 
-+ (void)showMessage:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle {
++ (void)showMessage:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle inWindow:(NSWindow *)window{
     KDAlertView *av = [[KDAlertView alloc] initWithTitle:message message:nil cancelButtonTitle:cancelButtonTitle cancelAction:nil];
-    [av show];
+    [av showInWindow:window];
 }
 
-+ (void)showErrorMessage:(NSString *)message {
++ (void)showErrorMessage:(NSString *)message inWindow:(NSWindow *)window{
     KDAlertView *av = [[KDAlertView alloc] initWithTitle:@"Error" message:message cancelButtonTitle:@"OK" cancelAction:nil];
     av.alertStyle = NSCriticalAlertStyle;
-    [av show];
+    [av showInWindow:window];
 }
 
 + (KDAlertView *)presentingAlertView {

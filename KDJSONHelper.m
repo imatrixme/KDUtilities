@@ -55,12 +55,7 @@ static NSData *JSONDataFromObject(id object) {
         KDLog(@"JSONHelper", @"Error occered when JSON serializate object to NSData: %@", error);
         return nil;
     }
-
-    objc_setAssociatedObject(result,
-                             &NSDataAssociatedJSONObject,
-                             object,
-                             OBJC_ASSOCIATION_RETAIN);
-
+    
     return result;
 }
 

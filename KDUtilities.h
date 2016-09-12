@@ -20,6 +20,13 @@
 
 #define KDUtilThrowNoImplementationException @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:[NSString stringWithFormat:@"This method has not been implemented: %@", NSStringFromSelector(_cmd)] userInfo:nil];
 
+//#define weakify(var) __weak typeof(var) AHKWeak_##var = var;
+//#define strongify(var) \
+//_Pragma("clang diagnostic push") \
+//_Pragma("clang diagnostic ignored \"-Wshadow\"") \
+//__strong typeof(var) var = AHKWeak_##var; \
+//_Pragma("clang diagnostic pop")
+
 
 NS_INLINE BOOL KDUtilIsObjectNull(id object) {
     return object == nil || object == [NSNull null];
@@ -48,6 +55,16 @@ extern void KDAssert(BOOL eval, NSString *format, ...);
 
 
 extern BOOL KDUtilIsOSMajorVersionHigherOrEqual(int version);
+
+#if DEBUG
+#define KDUtilConfirmOnMainThread _KDUtilConfirmOnMainThread();
+
+NS_INLINE void _KDUtilConfirmOnMainThread() {
+    KDAssert([NSThread isMainThread], @"KDUtilConfirmOnMainThread");
+}
+#else
+#define KDUtilConfirmOnMainThread {}
+#endif
 
 
 @interface NSNumber (KDUtilities)

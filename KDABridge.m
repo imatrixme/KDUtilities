@@ -19,3 +19,15 @@
 }
 
 @end
+
+@implementation NSButton (KDABridge)
+
+- (void)setSelected:(BOOL)selected {
+    self.state = selected ? NSOnState : NSOffState;
+}
+
+- (BOOL)selected {
+    return self.state == NSOnState;
+}
+
+@end

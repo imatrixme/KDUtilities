@@ -70,7 +70,7 @@ void _KDLog(NSString *module, NSString *format, ...) {
         [lock lock];
         
 #if DEBUG
-        fputs(line.UTF8String, stderr);
+//        fputs(line.UTF8String, stderr);
         static dispatch_once_t pred;
         static aslclient aslclient;
         

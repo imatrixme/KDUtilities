@@ -16,3 +16,9 @@
 @property (nonatomic, copy) NSString *text;
 
 @end
+
+@interface NSButton (KDABridge)
+
+@property (nonatomic) BOOL selected;
+
+@end

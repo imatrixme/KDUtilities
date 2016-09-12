@@ -14,6 +14,8 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
+#if TARGET_OS_IOS
+
 @interface KDAlertView : NSObject
 
 - (instancetype)initWithTitle:(NSString *)title
@@ -24,11 +26,7 @@
 - (void)addButtonWithTitle:(NSString *)title action:(void ( ^)(KDAlertView *alertView))action;
 - (void)show;
 
-#if TARGET_OS_IOS
 - (UIAlertView *)systemAlertView;
-#else
-@property (nonatomic) NSAlertStyle alertStyle;
-#endif
 
 + (void)showMessage:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle;
 + (void)showErrorMessage:(NSString *)message;
@@ -39,5 +37,32 @@
 @property (nonatomic, copy) NSString *message;
 
 @end
+
+#else
+
+@interface KDAlertView : NSObject
+
+- (instancetype)initWithTitle:(NSString *)title
+                      message:(NSString *)message
+            cancelButtonTitle:(NSString *)cancelButtonTitle
+                 cancelAction:(void ( ^)(KDAlertView *alertView))cancelAction;
+
+- (void)addButtonWithTitle:(NSString *)title action:(void ( ^)(KDAlertView *alertView))action;
+- (void)showInWindow:(NSWindow *)window;
+
+@property (nonatomic) NSAlertStyle alertStyle;
+
++ (void)showMessage:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle inWindow:(NSWindow *)window;
++ (void)showErrorMessage:(NSString *)message inWindow:(NSWindow *)window;
+
++ (KDAlertView *)presentingAlertView;
+
+@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *message;
+
+@end
+
+
+#endif
 
 #pragma clang diagnostic pop

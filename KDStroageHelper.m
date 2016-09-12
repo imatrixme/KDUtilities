@@ -36,11 +36,16 @@
 
 + (NSString *)cacheDirectoryPath {
     static dispatch_once_t pred;
-    __strong static id cachePath = nil;
+    __strong static NSString * cachePath = nil;
     
     dispatch_once(&pred, ^{
         NSArray *cachePaths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
         cachePath = cachePaths.firstObject;
+        
+#if !TARGET_OS_IOS
+        cachePath = [cachePath stringByAppendingString:[NSBundle mainBundle].bundleIdentifier];
+#endif
+        [[NSFileManager defaultManager] createDirectoryAtPath:cachePath withIntermediateDirectories:YES attributes:nil error:nil];
     });
     return cachePath;
 }
